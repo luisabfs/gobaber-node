@@ -15,7 +15,9 @@ class CreateAppointmentService {
 
     const appointmentDate = startOfHour(date);
 
-    const hasDateConflict = appointmentsRepository.findByDate(appointmentDate);
+    const hasDateConflict = await appointmentsRepository.findByDate(
+      appointmentDate,
+    );
 
     if (hasDateConflict) {
       throw Error('Date is not available.');
