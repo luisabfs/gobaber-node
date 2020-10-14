@@ -20,7 +20,7 @@ class CreateAppointmentService {
     );
 
     if (hasDateConflict) {
-      throw Error('Date is not available.');
+      throw new Error('Date is not available.');
     }
 
     const appointment = appointmentsRepository.create({
