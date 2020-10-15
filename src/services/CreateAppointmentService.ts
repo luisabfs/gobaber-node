@@ -1,6 +1,8 @@
 import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
+
 import AppointmentRepository from '../repositories/AppointmentsRepository';
 import Appointment from '../models/Appointment';
 
@@ -20,7 +22,7 @@ class CreateAppointmentService {
     );
 
     if (hasDateConflict) {
-      throw new Error('Date is not available.');
+      throw new AppError('Date is not available.');
     }
 
     const appointment = appointmentsRepository.create({
