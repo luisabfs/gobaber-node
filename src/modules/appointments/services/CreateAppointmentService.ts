@@ -4,7 +4,7 @@ import { getCustomRepository } from 'typeorm';
 import AppError from '@shared/errors/AppError';
 
 import Appointment from '../infra/typeorm/entities/Appointment';
-import AppointmentRepository from '../repositories/AppointmentsRepository';
+import AppointmentRepository from '../infra/typeorm/repositories/AppointmentsRepository';
 
 interface Request {
   provider_id: string;
@@ -25,12 +25,10 @@ class CreateAppointmentService {
       throw new AppError('Date is not available.');
     }
 
-    const appointment = appointmentsRepository.create({
+    const appointment = await appointmentsRepository.create({
       provider_id,
       date: appointmentDate,
     });
-
-    await appointmentsRepository.save(appointment);
 
     return appointment;
   }
