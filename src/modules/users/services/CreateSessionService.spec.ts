@@ -52,4 +52,32 @@ describe('AuthenticateUser', () => {
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
+
+  it('should not be able to authenticate with wrong password', async () => {
+    const fakeUsersRepository = new FakeUsersRepository();
+    const fakeHashProvider = new FakeHashProvider();
+
+    const createSession = new CreateSessionService(
+      fakeUsersRepository,
+      fakeHashProvider,
+    );
+
+    const createUser = new CreateUserService(
+      fakeUsersRepository,
+      fakeHashProvider,
+    );
+
+    await createUser.execute({
+      name: 'Jane Doe',
+      email: 'jane@gmail.com',
+      password: '123456',
+    });
+
+    expect(
+      createSession.execute({
+        email: 'jane@gmail.com',
+        password: '1234',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });
