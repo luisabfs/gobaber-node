@@ -33,7 +33,7 @@
 **Functional requirements**
 - Provider should be able to see a list of his appointments in a specific day;
 - Provider should receive a notification any time a new appointment is made;
-- Provider should be able to see a list of non-read notifications;
+- Provider should be able to see a list of not-read notifications;
 
 **Non-functional requirements**
 - Provider's appointment list must be cached;
@@ -41,7 +41,7 @@
 - Provider's notifications must be sent in real-time with Socket.io;
 
 **Business rules**
-- Notification should have a read/not read status;
+- Notification should have a _read/not-read_ status;
 
 
 ### Appointment schedule
