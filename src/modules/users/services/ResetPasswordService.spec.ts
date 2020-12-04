@@ -1,4 +1,4 @@
-// import AppError from '@shared/errors/AppError';
+import AppError from '@shared/errors/AppError';
 
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeUserTokensRepository from '../repositories/fakes/FakeUserTokensRepository';
@@ -24,7 +24,7 @@ describe('ResetPassword', () => {
     );
   });
 
-  it('should be able to reset password', async () => {
+  it('should be able to reset the password', async () => {
     const user = await fakeUsersRepository.create({
       name: 'Jane Doe',
       email: 'jane@gmail.com',
@@ -41,5 +41,14 @@ describe('ResetPassword', () => {
 
     expect(generateHash).toBeCalledWith('new_password');
     expect(updatedUser?.password).toBe('new_password');
+  });
+
+  it('should not be able to reset the password with a non-existing token', async () => {
+    await expect(
+      resetPassword.execute({
+        token: 'expired_token',
+        password: 'password',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
