@@ -64,4 +64,27 @@ describe('ResetPassword', () => {
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
+
+  it('should not be able to reset the password with an expired token', async () => {
+    const user = await fakeUsersRepository.create({
+      name: 'Jane Doe',
+      email: 'jane@gmail.com',
+      password: 'old_password',
+    });
+
+    const { token } = await fakeUserTokensRepository.generate(user.id);
+
+    jest.spyOn(Date, 'now').mockImplementationOnce(() => {
+      const customDate = new Date();
+
+      return customDate.setHours(customDate.getHours() + 3);
+    });
+
+    await expect(
+      resetPassword.execute({
+        token,
+        password: 'new_password',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });
