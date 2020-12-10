@@ -30,6 +30,10 @@ class CreateAppointmentService {
       throw new AppError("You can't create an appointment on a past date.");
     }
 
+    if (provider_id === user_id) {
+      throw new AppError("You can't create an appointment with yourself.");
+    }
+
     const hasDateConflict = await this.appointmentsRepository.findByDate(
       appointmentDate,
     );
