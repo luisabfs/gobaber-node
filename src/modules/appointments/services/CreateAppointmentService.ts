@@ -1,4 +1,4 @@
-import { startOfHour, isBefore } from 'date-fns';
+import { startOfHour, isBefore, getHours } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
@@ -32,6 +32,12 @@ class CreateAppointmentService {
 
     if (provider_id === user_id) {
       throw new AppError("You can't create an appointment with yourself.");
+    }
+
+    if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
+      throw new AppError(
+        'You can only create an appointment after 8am and before 5pm.',
+      );
     }
 
     const hasDateConflict = await this.appointmentsRepository.findByDate(
